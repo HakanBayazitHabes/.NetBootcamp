@@ -1,8 +1,10 @@
+using NetBootcamp.API.Controllers;
+
 namespace API.Models
 {
     public class ProductRepository
     {
-        private readonly List<Product> _products =
+        private static List<Product> _products =
         [
                 new Product { Id = 1, Name = "Product 1", Price = 100 },
                 new Product { Id = 2, Name = "Product 2", Price = 200 },
@@ -10,6 +12,18 @@ namespace API.Models
         ];
 
         public IReadOnlyList<Product> GetAll() => _products;
+
+        public void Update(Product product)
+        {
+            var index = _products.FindIndex(x => x.Id == product.Id);
+            _products[index] = product;
+        }
+
+        public void Create(Product product)
+        {
+            var methodName = nameof(ProductsController.GetById);
+            _products.Add(product);
+        }
 
         public Product? GetById(int id) => _products.Find(x => x.Id == id);
 
