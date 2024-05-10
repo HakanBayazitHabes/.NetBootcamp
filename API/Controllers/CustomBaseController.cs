@@ -1,8 +1,5 @@
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using API.DTOs;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+using API.SharedDTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NetBootcamp.API.Controllers

@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Net;
-using API.DTOs;
+using API.Products.DTOs;
+using API.SharedDTOs;
 
 namespace API.Models;
 
