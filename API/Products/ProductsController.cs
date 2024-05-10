@@ -1,25 +1,30 @@
-using API.Models;
 using API.Products.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using NetBootcamp.API.Controllers;
 
 
-namespace NetBootcamp.API.Controllers
+namespace API.Products
 {
     public class ProductsController : CustomBaseController
     {
-        private readonly ProductService _productService = new();
+        private readonly IProductService _productService;
+
+        public ProductsController(IProductService productService)
+        {
+            _productService = productService;
+        }
 
         //baseUrl/api/products
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromServices] PriceCalculator priceCalculator)
         {
-            return Ok(_productService.GetAllWithCalculatedTax());
+            return Ok(_productService.GetAllWithCalculatedTax(priceCalculator));
         }
 
         [HttpGet("{productId}")]
-        public IActionResult GetById(int productId)
+        public IActionResult GetById(int productId, [FromServices] PriceCalculator priceCalculator)
         {
-            return CreateActionResult(_productService.GetByIdWithCalculatedTax(productId));
+            return CreateActionResult(_productService.GetByIdWithCalculatedTax(productId, priceCalculator));
         }
 
 
