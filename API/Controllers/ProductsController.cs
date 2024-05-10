@@ -14,5 +14,18 @@ namespace API.Controllers
         {
             return Ok(_productService.GetAllWithCalculatedTax());
         }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var result = _productService.Delete(id);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.FailMessages);
+            }
+
+            return NoContent();
+        }
     }
 }

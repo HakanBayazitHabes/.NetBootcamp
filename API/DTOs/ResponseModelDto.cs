@@ -10,7 +10,7 @@ namespace API.DTOs
 
         [JsonIgnore]
         public bool IsSuccess { get; init; }
-        public List<string>? FailMessage { get; init; }
+        public List<string>? FailMessages { get; init; }
 
         public static ResponseModelDto<T> Success(T data)
         {
@@ -34,7 +34,7 @@ namespace API.DTOs
             return new ResponseModelDto<T>
             {
                 IsSuccess = false,
-                FailMessage = messages
+                FailMessages = messages
             };
         }
 
@@ -43,7 +43,7 @@ namespace API.DTOs
             return new ResponseModelDto<T>
             {
                 IsSuccess = false,
-                FailMessage = [message]
+                FailMessages = [message]
             };
         }
 
