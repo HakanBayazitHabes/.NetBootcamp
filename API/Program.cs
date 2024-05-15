@@ -1,4 +1,5 @@
 using API.Products;
+using API.Roles;
 using API.Users;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,11 +25,15 @@ builder.Services.AddSwaggerGen();
 // 3. AddTransient
 
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<PriceCalculator>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<AgeCalculator>();
+
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 
 var app = builder.Build();
 

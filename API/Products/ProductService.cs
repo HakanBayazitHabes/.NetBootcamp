@@ -60,7 +60,7 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         {
             Id = productRepository.GetAll().Count + 1,
             Name = request.Name,
-            Price = request.price,
+            Price = request.Price,
             CreatedDate = DateTime.Now
         };
 

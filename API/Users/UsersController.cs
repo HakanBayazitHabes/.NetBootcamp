@@ -5,26 +5,25 @@ using NetBootcamp.API.Controllers;
 
 namespace API.Users;
 
-public class UsersController(UserService userService) : CustomBaseController
+public class UsersController(IUserService userService) : CustomBaseController
 {
-    private readonly UserService _userService = userService;
 
     [HttpGet]
     public IActionResult GetAll([FromServices] AgeCalculator ageCalculator)
     {
-        return Ok(_userService.GetAllWithCalculatedAge(ageCalculator));
+        return Ok(userService.GetAllWithCalculatedAge(ageCalculator));
     }
 
     [HttpGet("{userId}")]
     public IActionResult GetById(int userId, [FromServices] AgeCalculator ageCalculator)
     {
-        return CreateActionResult(_userService.GetByIdWithCalculatedAge(userId, ageCalculator));
+        return CreateActionResult(userService.GetByIdWithCalculatedAge(userId, ageCalculator));
     }
 
     [HttpPost]
     public IActionResult Create(UserCreateRequestDto request)
     {
-        var result = _userService.Create(request);
+        var result = userService.Create(request);
 
         return CreateActionResult(result, nameof(GetById), new { userId = result.Data });
     }
@@ -32,13 +31,13 @@ public class UsersController(UserService userService) : CustomBaseController
     [HttpPut("{userId}")]
     public IActionResult Update(int userId, UserUpdateRequestDto request)
     {
-        return CreateActionResult(_userService.Update(userId, request));
+        return CreateActionResult(userService.Update(userId, request));
     }
 
     [HttpDelete("{userId}")]
     public IActionResult Delete(int userId)
     {
-        return CreateActionResult(_userService.Delete(userId));
+        return CreateActionResult(userService.Delete(userId));
     }
 
 }

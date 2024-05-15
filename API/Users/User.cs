@@ -1,3 +1,5 @@
+using API.Roles;
+
 namespace API.Users;
 
 public class User
@@ -10,6 +12,6 @@ public class User
 
     public DateTime Created { get; set; } = new();
 
-    public ICollection<Role> Roles { get; set; } = new List<Role>();
+    public ICollection<Role> Roles { get; set; }
 
 }
