@@ -1,6 +1,6 @@
 namespace API.Products.DTOs;
 
-public record ProductDto(int Id, string Name, decimal Price, string Created);
+public record ProductDto(int Id, string Name, decimal Price, string CreatedDate);
 
 // public record ProductDto
 // {

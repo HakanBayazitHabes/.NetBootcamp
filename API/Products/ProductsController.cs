@@ -5,14 +5,9 @@ using NetBootcamp.API.Controllers;
 
 namespace API.Products
 {
-    public class ProductsController : CustomBaseController
+    public class ProductsController(IProductService productService) : CustomBaseController
     {
-        private readonly IProductService _productService;
-
-        public ProductsController(IProductService productService)
-        {
-            _productService = productService;
-        }
+        private readonly IProductService _productService = productService;
 
         //baseUrl/api/products
         [HttpGet]
@@ -37,11 +32,6 @@ namespace API.Products
             var result = _productService.Create(request);
 
             return CreateActionResult(result, nameof(GetById), new { productId = result.Data });
-        }
-
-        private IActionResult CreateActionResult(object result, string v, object value)
-        {
-            throw new NotImplementedException();
         }
 
         // PUT localhost/api/products/10

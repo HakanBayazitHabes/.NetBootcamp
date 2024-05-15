@@ -1,4 +1,5 @@
 using API.Products;
+using API.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +24,11 @@ builder.Services.AddSwaggerGen();
 // 3. AddTransient
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<PriceCalculator>();
+builder.Services.AddSingleton<AgeCalculator>();
 
 var app = builder.Build();
 
