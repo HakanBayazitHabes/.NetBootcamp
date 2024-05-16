@@ -19,6 +19,21 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         return ResponseModelDto<ImmutableList<ProductDto>>.Success(productList);
     }
 
+    public ResponseModelDto<ImmutableList<ProductDto>> GetAllByPageWithCalculatedTax(
+                PriceCalculator priceCalculator, int page, int pageSize)
+    {
+        var productList = productRepository.GetAllByPage(page, pageSize).Select(product => new ProductDto(
+            product.Id,
+            product.Name,
+            priceCalculator.CalculateKdv(product.Price, 1.20m),
+            product.CreatedDate.ToShortDateString()
+        )).ToImmutableList();
+
+
+        return ResponseModelDto<ImmutableList<ProductDto>>.Success(productList);
+    }
+
+
 
     public ResponseModelDto<ProductDto?> GetByIdWithCalculatedTax(int id, PriceCalculator priceCalculator)
     {
@@ -69,6 +84,21 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         return ResponseModelDto<int>.Success(newProduct.Id, HttpStatusCode.Created);
     }
 
+    public ResponseModelDto<NoContent> UpdateProductName(int productId, string name)
+    {
+        var hasProduct = productRepository.GetById(productId);
+
+        if (hasProduct is null)
+        {
+            return ResponseModelDto<NoContent>.Fail("Güncellenmeye çalışılan ürün bulunamadı.",
+                HttpStatusCode.NotFound);
+        }
+
+        productRepository.UpdateProductName(name, productId);
+
+        return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
+    }
+    
     public ResponseModelDto<NoContent> Update(int productId, ProductUpdateRequestDto request)
     {
         var hasProduct = productRepository.GetById(productId);
