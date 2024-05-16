@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using API.Products.DTOs;
+using API.Products.ProductCreateUseCase;
 using API.SharedDTOs;
 
 namespace API.Products;

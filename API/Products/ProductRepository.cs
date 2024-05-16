@@ -60,7 +60,6 @@ namespace API.Products
 
         public void Create(Product product)
         {
-            var methodName = nameof(ProductsController.GetById);
             _products.Add(product);
         }
 
@@ -72,6 +71,11 @@ namespace API.Products
 
             _products.Remove(product);
 
+        }
+
+        public bool IsExists(string productName)
+        {
+            return _products.Any(x => x.Name == productName);
         }
     }
 }

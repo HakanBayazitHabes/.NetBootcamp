@@ -1,4 +1,5 @@
 using API.Products.DTOs;
+using API.Products.ProductCreateUseCase;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 
@@ -41,7 +42,7 @@ namespace API.Products
         }
 
         [HttpPut("UpdateProductName")]
-        public IActionResult UpdateProductName(ProductameUpdateRequestDto request)
+        public IActionResult UpdateProductName(ProductNameUpdateRequestDto request)
         {
             return CreateActionResult(_productService.UpdateProductName(request.Id, request.Name));
         }

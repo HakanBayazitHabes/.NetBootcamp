@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Net;
 using API.Products.DTOs;
+using API.Products.ProductCreateUseCase;
 using API.SharedDTOs;
 
 namespace API.Products;
@@ -71,10 +72,21 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 
     public ResponseModelDto<int> Create(ProductCreateRequestDto request)
     {
+        // fast fail
+        // Guard clauses
+
+        //var hasProduct = productRepository.IsExists(request.Name.Trim());
+
+        //if (hasProduct)
+        //{
+        //    return ResponseModelDto<int>.Fail("Oluşturma çalıştığınız ürün bulunmaktadır.",
+        //        HttpStatusCode.BadRequest);
+        //}
+
         var newProduct = new Product
         {
             Id = productRepository.GetAll().Count + 1,
-            Name = request.Name,
+            Name = request.Name.Trim(),
             Price = request.Price,
             CreatedDate = DateTime.Now
         };
@@ -98,7 +110,7 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 
         return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
     }
-    
+
     public ResponseModelDto<NoContent> Update(int productId, ProductUpdateRequestDto request)
     {
         var hasProduct = productRepository.GetById(productId);

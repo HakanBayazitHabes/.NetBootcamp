@@ -14,4 +14,6 @@ public interface IProductRepository
 
     void Delete(int id);
 
+    bool IsExists(string productName);
+
 }
