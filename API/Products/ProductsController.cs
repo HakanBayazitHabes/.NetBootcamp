@@ -17,13 +17,13 @@ namespace API.Products
             return Ok(_productService.GetAllWithCalculatedTax(priceCalculator));
         }
 
-        [HttpGet("page/{page}/pagesize/{pageSize}")]
+        [HttpGet("page/{page:int}/pagesize/{pageSize:max(50)}")]
         public IActionResult GetAllByPage(int page, int pageSize, [FromServices] PriceCalculator priceCalculator)
         {
             return CreateActionResult(_productService.GetAllByPageWithCalculatedTax(priceCalculator, page, pageSize));
         }
 
-        [HttpGet("{productId}")]
+        [HttpGet("{productId:int}")]
         public IActionResult GetById(int productId, [FromServices] PriceCalculator priceCalculator)
         {
             return CreateActionResult(_productService.GetByIdWithCalculatedTax(productId, priceCalculator));
@@ -48,13 +48,13 @@ namespace API.Products
         }
 
         // PUT localhost/api/products/10
-        [HttpPut("{productId}")]
+        [HttpPut("{productId:int}")]
         public IActionResult Update(int productId, ProductUpdateRequestDto request)
         {
             return CreateActionResult(_productService.Update(productId, request));
         }
 
-        [HttpDelete("{productId}")]
+        [HttpDelete("{productId:int}")]
         public IActionResult Delete(int productId)
         {
             return CreateActionResult(_productService.Delete(productId));
