@@ -42,7 +42,7 @@ public class ProductCreateRequestValidator : AbstractValidator<ProductCreateRequ
         //}
     }
 
-    public bool CheckIdentityNo(string identityNo)
+    public static bool CheckIdentityNo(string identityNo)
     {
         //Action delegate => void
         //Predicate delegate => bool

@@ -1,11 +1,18 @@
 using API.Products;
 using API.Products.ProductCreateUseCase;
+using API.Repositories;
 using API.Roles;
 using API.Users;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(x =>
+{
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+});
 
 // Add services to the container.
 
@@ -43,6 +50,9 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 
 var app = builder.Build();
+
+app.SeedDatabase();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

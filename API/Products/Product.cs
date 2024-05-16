@@ -8,5 +8,6 @@ namespace API.Products
         public DateTime CreatedDate { get; set; }
 
         public string Barcode { get; init; } = default!;
+        public int Stock { get; set; }
     }
 }
