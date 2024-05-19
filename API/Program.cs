@@ -1,4 +1,6 @@
+using System.Reflection;
 using API.Products;
+using API.Products.AsyncMethods;
 using API.Products.ProductCreateUseCase;
 using API.Repositories;
 using API.Roles;
@@ -15,7 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 });
 
 // Add services to the container.
-
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -41,6 +43,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidat
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProductService2, ProductService2>();
+builder.Services.AddScoped<IProductRepository2, ProductRepository2>();
 builder.Services.AddSingleton<PriceCalculator>();
 
 builder.Services.AddScoped<IUserService, UserService>();
