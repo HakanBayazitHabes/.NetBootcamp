@@ -40,6 +40,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidat
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddSingleton<PriceCalculator>();
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -48,6 +49,9 @@ builder.Services.AddSingleton<AgeCalculator>();
 
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 var app = builder.Build();
 

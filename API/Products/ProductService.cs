@@ -2,11 +2,12 @@ using System.Collections.Immutable;
 using System.Net;
 using API.Products.DTOs;
 using API.Products.ProductCreateUseCase;
+using API.Repositories;
 using API.SharedDTOs;
 
 namespace API.Products;
 
-public class ProductService(IProductRepository productRepository) : IProductService
+public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork) : IProductService
 {
     public ResponseModelDto<ImmutableList<ProductDto>> GetAllWithCalculatedTax(PriceCalculator priceCalculator)
     {
@@ -67,6 +68,8 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 
         productRepository.Delete(id);
 
+        unitOfWork.Commit();
+
         return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
     }
 
@@ -85,13 +88,17 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 
         var newProduct = new Product
         {
-            Id = productRepository.GetAll().Count + 1,
+            //Id = productRepository.GetAll().Count + 1,
             Name = request.Name.Trim(),
             Price = request.Price,
+            Stock = 10,
+            Barcode = Guid.NewGuid().ToString(),
             CreatedDate = DateTime.Now
         };
 
         productRepository.Create(newProduct);
+
+        unitOfWork.Commit();
 
         return ResponseModelDto<int>.Success(newProduct.Id, HttpStatusCode.Created);
     }
@@ -106,7 +113,8 @@ public class ProductService(IProductRepository productRepository) : IProductServ
                 HttpStatusCode.NotFound);
         }
 
-        productRepository.UpdateProductName(name, productId);
+        //productRepository.UpdateProductName(name, productId);
+        unitOfWork.Commit();
 
         return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
     }
@@ -121,15 +129,12 @@ public class ProductService(IProductRepository productRepository) : IProductServ
                 HttpStatusCode.NotFound);
         }
 
-        var updatedProduct = new Product
-        {
-            Id = productId,
-            Name = request.Name,
-            Price = request.Price,
-            CreatedDate = hasProduct.CreatedDate
-        };
+        hasProduct.Name = request.Name;
+        hasProduct.Price = request.Price;
 
-        productRepository.Update(updatedProduct);
+        productRepository.Update(hasProduct);
+
+        unitOfWork.Commit();
 
         return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
     }
