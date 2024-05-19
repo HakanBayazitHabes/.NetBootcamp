@@ -2,7 +2,7 @@ using API.Repositories;
 
 namespace API.Products;
 
-public class ProductRepositoryWithSqlServer2(AppDbContext context) : IProductRepository
+public class ProductRepositoryWithSqlServer(AppDbContext context) : IProductRepository
 {
 
     public IReadOnlyList<Product> GetAll()
