@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using API.Roles.DTOs;
-using API.SharedDTOs;
+using Service.SharedDTOs;
 
 namespace API.Roles;
 

@@ -1,23 +1,27 @@
-using System.Reflection;
-using API.Products;
-using API.Products.AsyncMethods;
-using API.Products.ProductCreateUseCase;
-using API.Repositories;
 using API.Roles;
 using API.Users;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Repository;
+using Service;
+using Service.Products.Configurations;
+using Service.Products.ProductCreateUseCase;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
-    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"), x => { x.MigrationsAssembly(typeof(RepositoryAssembly).Assembly.GetName().Name); });
 });
 
+builder.Services.Configure<ApiBehaviorOptions>(x => { x.SuppressModelStateInvalidFilter = true; });
+
+
 // Add services to the container.
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(ServiceAssembly).Assembly);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,12 +44,11 @@ builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidat
 // 2. AddScoped (*)
 // 3. AddTransient
 
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IProductService2, ProductService2>();
-builder.Services.AddScoped<IProductRepository2, ProductRepository2>();
-builder.Services.AddSingleton<PriceCalculator>();
+
+
+builder.Services.AddProductService();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using System.Net;
-using API.SharedDTOs;
 using API.Users.DTOs;
+using Service.SharedDTOs;
 
 namespace API.Users;
 

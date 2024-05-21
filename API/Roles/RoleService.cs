@@ -1,8 +1,7 @@
 using System.Collections.Immutable;
 using System.Net;
-using API.Products;
 using API.Roles.DTOs;
-using API.SharedDTOs;
+using Service.SharedDTOs;
 
 namespace API.Roles;
 

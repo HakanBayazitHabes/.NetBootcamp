@@ -1,8 +1,9 @@
-using API.Products.AsyncMethods;
-using API.Products.DTOs;
-using API.Products.ProductCreateUseCase;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
+using Service.Products;
+using Service.Products.AsyncMethods;
+using Service.Products.DTOs;
+using Service.Products.ProductCreateUseCase;
 
 
 namespace API.Products
@@ -13,9 +14,10 @@ namespace API.Products
 
         //baseUrl/api/products
         [HttpGet]
-        public IActionResult GetAll([FromServices] PriceCalculator priceCalculator)
+        public async Task<IActionResult> GetAll([FromServices] PriceCalculator priceCalculator)
         {
-            return Ok(_productService.GetAllWithCalculatedTax(priceCalculator));
+            var result = await _productService.GetAllWithCalculatedTax(priceCalculator);
+            return Ok(result);
         }
 
         [HttpGet("page/{page:int}/pagesize/{pageSize:max(50)}")]
