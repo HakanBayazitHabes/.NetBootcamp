@@ -1,4 +1,4 @@
-namespace API.Users;
+namespace Repository.Users;
 
 public class UserRepository : IUserRepository
 {
@@ -13,7 +13,6 @@ public class UserRepository : IUserRepository
 
     public void Create(User user)
     {
-        var methodName = nameof(UsersController.GetById);
         _users.Add(user);
     }
 

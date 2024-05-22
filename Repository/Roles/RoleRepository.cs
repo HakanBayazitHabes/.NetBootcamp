@@ -1,5 +1,5 @@
 
-namespace API.Roles;
+namespace Repository.Roles;
 
 public class RoleRepository : IRoleRepository
 {

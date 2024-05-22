@@ -1,4 +1,4 @@
-namespace API.Users;
+namespace Repository.Users;
 
 public interface IUserRepository
 {
@@ -7,4 +7,5 @@ public interface IUserRepository
     void Update(User user);
     void Delete(int id);
     User? GetById(int id);
+    
 }

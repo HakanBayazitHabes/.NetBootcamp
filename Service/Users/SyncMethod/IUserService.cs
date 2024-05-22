@@ -1,8 +1,9 @@
 using System.Collections.Immutable;
-using API.Users.DTOs;
 using Service.SharedDTOs;
+using Service.Users.DTOs;
+using Service.Users.Helpers;
 
-namespace API.Users;
+namespace Service.Users.SyncMethod;
 
 public interface IUserService
 {

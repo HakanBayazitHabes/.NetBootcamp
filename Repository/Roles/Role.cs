@@ -1,6 +1,6 @@
-using API.Users;
+using Repository.Users;
 
-namespace API.Roles;
+namespace Repository.Roles;
 
 public class Role
 {

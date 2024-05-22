@@ -1,6 +1,6 @@
-using API.Roles;
+using Repository.Roles;
 
-namespace API.Users;
+namespace Repository.Users;
 
 public class User
 {
@@ -10,7 +10,7 @@ public class User
     public string Password { get; set; }
     public DateTime Age { get; set; }
 
-    public DateTime Created { get; set; } = new();
+    public DateTime CreatedDate { get; set; } = new();
 
     public ICollection<Role> Roles { get; set; }
 

@@ -1,4 +1,4 @@
-namespace API.Users;
+namespace Service.Users.Helpers;
 
 public class AgeCalculator
 {

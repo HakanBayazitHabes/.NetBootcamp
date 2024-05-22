@@ -1,4 +1,4 @@
-namespace API.Roles;
+namespace Repository.Roles;
 
 public interface IRoleRepository
 {

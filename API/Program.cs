@@ -1,13 +1,14 @@
 using API.Roles;
-using API.Users;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Repository.Roles;
 using Service;
 using Service.Products.Configurations;
 using Service.Products.ProductCreateUseCase;
+using Service.Users.Configurations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,9 +51,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 builder.Services.AddProductService();
 
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddSingleton<AgeCalculator>();
+builder.Services.AddUserService();
 
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();

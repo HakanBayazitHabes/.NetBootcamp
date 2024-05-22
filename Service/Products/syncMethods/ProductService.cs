@@ -13,14 +13,17 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 {
     public ResponseModelDto<ImmutableList<ProductDto>> GetAllWithCalculatedTax(PriceCalculator priceCalculator)
     {
-        var productList = productRepository.GetAll().Select(product => new ProductDto(
-            product.Id,
-            product.Name,
-            priceCalculator.CalculateKdv(product.Price, 1.20m),
-            product.CreatedDate.ToShortDateString()
-        )).ToImmutableList();
+        var productList = productRepository.GetAll();
+        // .Select(product => new ProductDto(
+        //     product.Id,
+        //     product.Name,
+        //     priceCalculator.CalculateKdv(product.Price, 1.20m),
+        //     product.CreatedDate.ToShortDateString()
+        // )).ToImmutableList();
 
-        return ResponseModelDto<ImmutableList<ProductDto>>.Success(productList);
+        var productListAsDto = mapper.Map<List<ProductDto>>(productList);
+
+        return ResponseModelDto<ImmutableList<ProductDto>>.Success(productListAsDto.ToImmutableList());
     }
 
     public ResponseModelDto<ImmutableList<ProductDto>> GetAllByPageWithCalculatedTax(

@@ -1,9 +1,11 @@
 using System.Collections.Immutable;
 using System.Net;
-using API.Users.DTOs;
+using Repository.Users;
 using Service.SharedDTOs;
+using Service.Users.DTOs;
+using Service.Users.Helpers;
 
-namespace API.Users;
+namespace Service.Users.SyncMethod;
 
 public class UserService(IUserRepository userRepository) : IUserService
 {

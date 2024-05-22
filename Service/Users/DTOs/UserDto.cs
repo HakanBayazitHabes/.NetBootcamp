@@ -1,4 +1,4 @@
-namespace API.Users.DTOs;
+namespace Service.Users.DTOs;
 
 public record UserDto(int Id, string Name, string Email, string Password, int Age, string Created);
 

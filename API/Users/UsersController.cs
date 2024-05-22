@@ -1,43 +1,45 @@
-using API.Products;
-using API.Users.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
+using Service.Users.AsyncMethod;
+using Service.Users.DTOs;
+using Service.Users.Helpers;
+using Service.Users.UserCreateUseCase;
 
 namespace API.Users;
 
-public class UsersController(IUserService userService) : CustomBaseController
+public class UsersController(IUserServiceAsync userServiceAsync) : CustomBaseController
 {
 
     [HttpGet]
-    public IActionResult GetAll([FromServices] AgeCalculator ageCalculator)
+    public async Task<IActionResult> GetAll([FromServices] AgeCalculator ageCalculator)
     {
-        return Ok(userService.GetAllWithCalculatedAge(ageCalculator));
+        return Ok(await userServiceAsync.GetAllWithCalculatedAge(ageCalculator));
     }
 
     [HttpGet("{userId}")]
-    public IActionResult GetById(int userId, [FromServices] AgeCalculator ageCalculator)
+    public async Task<IActionResult> GetById(int userId, [FromServices] AgeCalculator ageCalculator)
     {
-        return CreateActionResult(userService.GetByIdWithCalculatedAge(userId, ageCalculator));
+        return CreateActionResult(await userServiceAsync.GetByIdWithCalculatedAge(userId, ageCalculator));
     }
 
     [HttpPost]
-    public IActionResult Create(UserCreateRequestDto request)
+    public async Task<IActionResult> Create(UserCreateRequestDto request)
     {
-        var result = userService.Create(request);
+        var result = await userServiceAsync.Create(request);
 
         return CreateActionResult(result, nameof(GetById), new { userId = result.Data });
     }
 
     [HttpPut("{userId}")]
-    public IActionResult Update(int userId, UserUpdateRequestDto request)
+    public async Task<IActionResult> Update(int userId, UserUpdateRequestDto request)
     {
-        return CreateActionResult(userService.Update(userId, request));
+        return CreateActionResult(await userServiceAsync.Update(userId, request));
     }
 
     [HttpDelete("{userId}")]
-    public IActionResult Delete(int userId)
+    public async Task<IActionResult> Delete(int userId)
     {
-        return CreateActionResult(userService.Delete(userId));
+        return CreateActionResult(await userServiceAsync.Delete(userId));
     }
 
 }
