@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Repository;
 using Repository.Users;
-using Service.Products.DTOs;
 using Service.SharedDTOs;
 using Service.Users.DTOs;
 using Service.Users.Helpers;

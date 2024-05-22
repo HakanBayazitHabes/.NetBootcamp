@@ -1,4 +1,5 @@
 using Repository.Categories;
+using Repository.Roles;
 
 namespace Repository;
 
@@ -8,13 +9,10 @@ public class SeedData
     {
         context.Database.EnsureCreated();
 
-        if (context.Categories.Any())
+        if (!context.Categories.Any())
         {
-            return;
-        }
-
-        var categories = new[]
-        {
+            var categories = new[]
+            {
                 new Category { Id = Guid.NewGuid(), Name = "Electronics" },
                 new Category { Id = Guid.NewGuid(), Name = "Clothing" },
                 new Category { Id = Guid.NewGuid(), Name = "Grocery" },
@@ -22,9 +20,28 @@ public class SeedData
                 new Category { Id = Guid.NewGuid(), Name = "Furniture" }
             };
 
-        context.Categories.AddRange(categories);
+            context.Categories.AddRange(categories);
+            context.SaveChanges();
+
+        }
+
+        if (!context.Roles.Any())
+        {
+            var roles = new[]
+            {
+            new Role { Id = 1, Name = "Admin" },
+            new Role { Id = 2, Name = "User" },
+            new Role { Id = 3, Name = "Moderator" }
+            };
+
+            context.Roles.AddRange(roles);
+            context.SaveChanges();
+
+        }
 
 
-        context.SaveChanges();
+
+
     }
+
 }

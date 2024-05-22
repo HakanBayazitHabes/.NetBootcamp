@@ -6,9 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.Roles;
 using Service;
-using Service.Products.Configurations;
 using Service.Products.ProductCreateUseCase;
+using Service.Products.Configurations;
 using Service.Users.Configurations;
+using Service.Roles.Configurations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,8 +54,7 @@ builder.Services.AddProductService();
 
 builder.Services.AddUserService();
 
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddRoleService();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

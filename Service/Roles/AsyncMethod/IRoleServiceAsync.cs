@@ -1,10 +1,11 @@
 using System.Collections.Immutable;
-using API.Roles.DTOs;
+using Service.Roles.DTOs;
+using Service.Roles.RoleCreateUseCase;
 using Service.SharedDTOs;
 
-namespace API.Roles;
+namespace Service.Roles.AsyncMethod;
 
-public interface IRoleService
+public interface IRoleServiceAsync
 {
     Task<ResponseModelDto<ImmutableList<RoleDto>>> GetAllRolesAsync();
     Task<ResponseModelDto<RoleDto?>> GetRoleByIdAsync(int id);
@@ -14,5 +15,7 @@ public interface IRoleService
     Task<ResponseModelDto<NoContent>> UpdateRoleAsync(int roleId, RoleUpdateRequestDto request);
 
     Task<ResponseModelDto<NoContent>> DeleteRoleAsync(int id);
+
+    Task<ResponseModelDto<NoContent>> UpdateRoleName(int id, string name);
 
 }

@@ -1,3 +1,3 @@
-namespace API.Roles.DTOs;
+namespace Service.Roles.RoleCreateUseCase;
 
 public record RoleCreateRequestDto(string Name);
