@@ -80,13 +80,14 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
             return ResponseModelDto<ProductDto?>.Fail("Ürün bulunamadı", HttpStatusCode.NotFound);
         }
 
+        // var productAsDto = new ProductDto(
+        //     hasProduct.Id,
+        //     hasProduct.Name,
+        //     priceCalculator.CalculateKdv(hasProduct.Price, 1.20m),
+        //     hasProduct.CreatedDate.ToShortDateString()
+        // );
 
-        var productAsDto = new ProductDto(
-            hasProduct.Id,
-            hasProduct.Name,
-            priceCalculator.CalculateKdv(hasProduct.Price, 1.20m),
-            hasProduct.CreatedDate.ToShortDateString()
-        );
+        var productAsDto = mapper.Map<ProductDto>(hasProduct);
 
         return ResponseModelDto<ProductDto?>.Success(productAsDto);
     }

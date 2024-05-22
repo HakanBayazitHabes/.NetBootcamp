@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Net;
+using AutoMapper;
 using Repository;
 using Repository.Products;
 using Service.Products.DTOs;
@@ -8,7 +9,7 @@ using Service.SharedDTOs;
 
 namespace Service.Products;
 
-public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork) : IProductService
+public class ProductService(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper) : IProductService
 {
     public ResponseModelDto<ImmutableList<ProductDto>> GetAllWithCalculatedTax(PriceCalculator priceCalculator)
     {
@@ -25,15 +26,18 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
     public ResponseModelDto<ImmutableList<ProductDto>> GetAllByPageWithCalculatedTax(
                 PriceCalculator priceCalculator, int page, int pageSize)
     {
-        var productList = productRepository.GetAllByPage(page, pageSize).Select(product => new ProductDto(
-            product.Id,
-            product.Name,
-            priceCalculator.CalculateKdv(product.Price, 1.20m),
-            product.CreatedDate.ToShortDateString()
-        )).ToImmutableList();
+        var productList = productRepository.GetAllByPage(page, pageSize);
+        // .Select(product => new ProductDto(
+        //     product.Id,
+        //     product.Name,
+        //     priceCalculator.CalculateKdv(product.Price, 1.20m),
+        //     product.CreatedDate.ToShortDateString()
+        // )).ToImmutableList();
+
+        var prodcutListAsDto = mapper.Map<List<ProductDto>>(productList);
 
 
-        return ResponseModelDto<ImmutableList<ProductDto>>.Success(productList);
+        return ResponseModelDto<ImmutableList<ProductDto>>.Success(prodcutListAsDto.ToImmutableList());
     }
 
 
@@ -47,14 +51,16 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
             return ResponseModelDto<ProductDto?>.Fail("Product Not Found", HttpStatusCode.NotFound);
         }
 
-        var newDto = new ProductDto(
-            product.Id,
-            product.Name,
-            priceCalculator.CalculateKdv(product.Price, 1.20m),
-            product.CreatedDate.ToShortDateString()
-        );
+        // var newDto = new ProductDto(
+        //     product.Id,
+        //     product.Name,
+        //     priceCalculator.CalculateKdv(product.Price, 1.20m),
+        //     product.CreatedDate.ToShortDateString()
+        // );
 
-        return ResponseModelDto<ProductDto?>.Success(newDto);
+        var productAsDto = mapper.Map<ProductDto>(product);
+
+        return ResponseModelDto<ProductDto?>.Success(productAsDto);
     }
 
     public ResponseModelDto<NoContent> Delete(int id)
