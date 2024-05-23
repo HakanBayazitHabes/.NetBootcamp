@@ -130,3 +130,9 @@
 2024-05-24 00:53:50.3175 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
 2024-05-24 00:53:50.3643 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=/Users/hakanbayazithabes/Desktop/NetBootcamp/API/nlog.config
 2024-05-24 00:53:50.3689 Info Configuration initialized.
+2024-05-24 01:10:43.4148 Info AppDomain Shutting down. LogFactory closing...
+2024-05-24 01:10:43.4218 Info LogFactory has been closed.
+2024-05-24 01:27:42.6156 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-24 01:27:42.6293 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-24 01:27:42.6728 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=/Users/hakanbayazithabes/Desktop/NetBootcamp/API/nlog.config
+2024-05-24 01:27:42.6773 Info Configuration initialized.

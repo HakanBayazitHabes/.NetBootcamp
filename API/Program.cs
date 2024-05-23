@@ -12,6 +12,8 @@ using API.Filters;
 using Service.Logs.Configurations;
 using NLog;
 using Repository.Redis;
+using API.Extensions;
+using AspNetCoreRateLimit;
 
 
 
@@ -60,6 +62,10 @@ builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidat
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMemoryCache();
+
 builder.Services.AddSingleton<LogFilterAttribute>();
 
 builder.Services.AddProductService();
@@ -86,6 +92,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseIpRateLimiting();
 app.UseHttpsRedirection();
 
 app.MapControllers();
