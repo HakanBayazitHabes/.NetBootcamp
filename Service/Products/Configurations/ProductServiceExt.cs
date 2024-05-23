@@ -19,7 +19,7 @@ public static class ProductServiceExt
 
         //builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidator>();
-        // services.AddScoped<NotFoundFilter>();
+        services.AddScoped<NotFoundFilter>();
 
         services.AddSingleton<PriceCalculator>();
     }

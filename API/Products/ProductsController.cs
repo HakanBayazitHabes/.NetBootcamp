@@ -26,6 +26,7 @@ namespace API.Products
             return CreateActionResult(await _productService.GetAllByPageWithCalculatedTax(priceCalculator, page, pageSize));
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpGet("{productId:int}")]
         public async Task<IActionResult> GetById(int productId, [FromServices] PriceCalculator priceCalculator)
         {
@@ -44,6 +45,7 @@ namespace API.Products
             return CreateActionResult(result, nameof(GetById), new { productId = result.Data });
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpPut("UpdateProductName")]
         public async Task<IActionResult> UpdateProductName(ProductNameUpdateRequestDto request)
         {
@@ -51,12 +53,14 @@ namespace API.Products
         }
 
         // PUT localhost/api/products/10
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpPut("{productId:int}")]
         public async Task<IActionResult> Update(int productId, ProductUpdateRequestDto request)
         {
             return CreateActionResult(await _productService.Update(productId, request));
         }
 
+        [ServiceFilter(typeof(NotFoundFilter))]
         [HttpDelete("{productId:int}")]
         public async Task<IActionResult> Delete(int productId)
         {

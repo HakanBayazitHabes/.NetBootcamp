@@ -1,7 +1,3 @@
-using Repository;
-using Repository.Products;
-using Repository.Products.AsyncMethods;
-
 namespace Repository.Products.AsyncMethods;
 
 public class ProductRepository2(AppDbContext context) : GenericRepository<Product>(context), IProductRepository2

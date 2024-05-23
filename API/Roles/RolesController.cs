@@ -1,13 +1,15 @@
-using API.Roles.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
+using Service.Roles.AsyncMethod;
+using Service.Roles.DTOs;
+using Service.Roles.RoleCreateUseCase;
 
 namespace API.Roles;
 
-public class RolesController(IRoleService roleService) : CustomBaseController
+public class RolesController(IRoleServiceAsync roleService) : CustomBaseController
 {
 
-    private readonly IRoleService _roleService = roleService;
+    private readonly IRoleServiceAsync _roleService = roleService;
 
     [HttpGet]
     public async Task<IActionResult> GetAllRoles()

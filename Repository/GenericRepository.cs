@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
-public class GenericRepository<T>(AppDbContext context) : IGenericRepository<T> where T : class
+public class GenericRepository<T>(AppDbContext context) : IGenericRepository<T> where T : BaseEntity<int>
 {
 
     public DbSet<T> DbSet { get; set; } = context.Set<T>();
@@ -51,5 +51,10 @@ public class GenericRepository<T>(AppDbContext context) : IGenericRepository<T> 
     {
         DbSet.Update(entity);
         return Task.CompletedTask;
+    }
+
+    public Task<bool> HasExist(int id)
+    {
+        return DbSet.AnyAsync(x => x.Id == id);
     }
 }

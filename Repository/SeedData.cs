@@ -29,9 +29,9 @@ public class SeedData
         {
             var roles = new[]
             {
-            new Role { Id = 1, Name = "Admin" },
-            new Role { Id = 2, Name = "User" },
-            new Role { Id = 3, Name = "Moderator" }
+            new Role {  Name = "Admin" },
+            new Role {Name = "User" },
+            new Role {  Name = "Moderator" }
             };
 
             context.Roles.AddRange(roles);

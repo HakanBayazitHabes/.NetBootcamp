@@ -4,6 +4,7 @@ using Repository.Users;
 using Service.SharedDTOs;
 using Service.Users.DTOs;
 using Service.Users.Helpers;
+using Service.Users.UserCreateUseCase;
 
 namespace Service.Users.SyncMethod;
 
@@ -18,7 +19,7 @@ public class UserService(IUserRepository userRepository) : IUserService
             Email = request.Email,
             Password = request.Password,
             Age = request.Age,
-            Created = DateTime.Now
+            CreatedDate = DateTime.Now
         };
 
         userRepository.Create(newUser);
@@ -49,7 +50,7 @@ public class UserService(IUserRepository userRepository) : IUserService
             user.Email,
             user.Password,
             ageCalculator.CalculateAge(user.Age),
-            user.Created.ToShortDateString()
+            user.CreatedDate.ToShortDateString()
         )).ToImmutableList();
 
         return ResponseModelDto<ImmutableList<UserDto>>.Success(userList);
@@ -70,7 +71,7 @@ public class UserService(IUserRepository userRepository) : IUserService
             user.Email,
             user.Password,
             ageCalculator.CalculateAge(user.Age),
-            user.Created.ToShortDateString()
+            user.CreatedDate.ToShortDateString()
         );
 
         return ResponseModelDto<UserDto>.Success(newDto);
@@ -93,7 +94,7 @@ public class UserService(IUserRepository userRepository) : IUserService
             Email = request.Email,
             Password = request.Password,
             Age = request.Age,
-            Created = hasUser.Created
+            CreatedDate = hasUser.CreatedDate
         };
 
         userRepository.Update(updatedUser);

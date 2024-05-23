@@ -13,7 +13,6 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         builder.Property(user => user.Email).IsRequired().HasMaxLength(100);
         builder.Property(user => user.Password).IsRequired().HasMaxLength(100);
         builder.Property(user => user.Age).IsRequired();
-        builder.HasCheckConstraint("CK_User_Age", "[Age] >= 0 AND [Age] <= 100");
         builder.Property(user => user.CreatedDate).IsRequired();
         builder.HasMany(user => user.Roles).WithMany(role => role.Users);
     }

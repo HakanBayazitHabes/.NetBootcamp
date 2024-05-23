@@ -75,11 +75,13 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
     {
         var hasProduct = await productRepository.GetById(id);
 
-        if (hasProduct is null)
-        {
-            return ResponseModelDto<ProductDto?>.Fail("Ürün bulunamadı", HttpStatusCode.NotFound);
-        }
+        //Action Filter yazıldı
+        // if (hasProduct is null)
+        // {
+        //     return ResponseModelDto<ProductDto?>.Fail("Ürün bulunamadı", HttpStatusCode.NotFound);
+        // }
 
+        // Mapper eklendi
         // var productAsDto = new ProductDto(
         //     hasProduct.Id,
         //     hasProduct.Name,
@@ -96,11 +98,12 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
     {
         var hasProduct = await productRepository.GetById(productId);
 
-        if (hasProduct is null)
-        {
-            return ResponseModelDto<NoContent>.Fail("Güncellenmeye çalışılan ürün bulunamadı.",
-                HttpStatusCode.NotFound);
-        }
+        // Action filter eklendi
+        // if (hasProduct is null)
+        // {
+        //     return ResponseModelDto<NoContent>.Fail("Güncellenmeye çalışılan ürün bulunamadı.",
+        //         HttpStatusCode.NotFound);
+        // }
 
 
         hasProduct.Name = request.Name;
