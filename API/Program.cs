@@ -11,6 +11,7 @@ using Service.Roles.Configurations;
 using API.Filters;
 using Service.Logs.Configurations;
 using NLog;
+using Repository.Redis;
 
 
 
@@ -20,6 +21,12 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 {
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"), x => { x.MigrationsAssembly(typeof(RepositoryAssembly).Assembly.GetName().Name); });
 });
+
+builder.Services.AddSingleton<RedisService>(x =>
+{
+    return new RedisService(builder.Configuration.GetConnectionString("Redis")!);
+});
+
 
 LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
@@ -54,6 +61,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidat
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddSingleton<LogFilterAttribute>();
+
 builder.Services.AddProductService();
 
 builder.Services.AddUserService();
@@ -61,6 +69,7 @@ builder.Services.AddUserService();
 builder.Services.AddRoleService();
 
 builder.Services.AddLogService();
+
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

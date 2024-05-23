@@ -126,3 +126,7 @@
 2024-05-23 14:45:55.8585 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
 2024-05-23 14:45:55.8927 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=/Users/hakanbayazithabes/Desktop/NetBootcamp/API/nlog.config
 2024-05-23 14:45:55.9000 Info Configuration initialized.
+2024-05-24 00:53:50.3038 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-24 00:53:50.3175 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-24 00:53:50.3643 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=/Users/hakanbayazithabes/Desktop/NetBootcamp/API/nlog.config
+2024-05-24 00:53:50.3689 Info Configuration initialized.

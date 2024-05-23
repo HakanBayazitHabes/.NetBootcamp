@@ -1,19 +1,27 @@
 using System.Collections.Immutable;
 using System.Net;
+using System.Text.Json;
 using AutoMapper;
 using Repository;
 using Repository.Products;
 using Repository.Products.AsyncMethods;
+using Repository.Redis;
 using Service.Products.DTOs;
 using Service.Products.ProductCreateUseCase;
 using Service.SharedDTOs;
 
 namespace Service.Products.AsyncMethods;
 
-public class ProductService2(IProductRepository2 productRepository, IUnitOfWork unitOfWork, IMapper mapper) : IProductService2
+public class ProductService2(IProductRepository2 productRepository, RedisService redisService, IUnitOfWork unitOfWork, IMapper mapper) : IProductService2
 {
+    private const string ProductCacheKey = "products";
+    private const string ProductCacheKeyAsList = "products-list";
+
     public async Task<ResponseModelDto<int>> Create(ProductCreateRequestDto request)
     {
+
+        redisService.Database.KeyDelete(ProductCacheKey);
+
         var newProduct = new Product
         {
             Name = request.Name.Trim(),
@@ -31,8 +39,12 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
 
     public async Task<ResponseModelDto<NoContent>> Delete(int id)
     {
+        redisService.Database.KeyDelete(ProductCacheKey);
+
         await productRepository.Delete(id);
+
         await unitOfWork.CommitAsync();
+
         return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
     }
 
@@ -63,9 +75,27 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
     public async Task<ResponseModelDto<ImmutableList<ProductDto>>> GetAllWithCalculatedTax(
         PriceCalculator priceCalculator)
     {
+        if (redisService.Database.KeyExists(ProductCacheKey))
+        {
+            var productListAsJsonFromCache = redisService.Database.StringGet(ProductCacheKey);
+
+            var productListFromCache = JsonSerializer.Deserialize<ImmutableList<ProductDto>>(productListAsJsonFromCache);
+
+            return ResponseModelDto<ImmutableList<ProductDto>>.Success(productListFromCache);
+        }
+
         var productList = await productRepository.GetAll();
 
         var productListAsDto = mapper.Map<List<ProductDto>>(productList);
+
+        var productListAsJson = JsonSerializer.Serialize(productList);
+        redisService.Database.StringSet(ProductCacheKey, productListAsJson);
+
+        productListAsDto.ForEach(product =>
+           {
+               redisService.Database.ListLeftPush($"{ProductCacheKeyAsList}:{product.Id}",
+                   JsonSerializer.Serialize(product));
+           });
 
         return ResponseModelDto<ImmutableList<ProductDto>>.Success(productListAsDto.ToImmutableList());
     }
@@ -73,6 +103,18 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
     public async Task<ResponseModelDto<ProductDto?>> GetByIdWithCalculatedTax(int id,
         PriceCalculator priceCalculator)
     {
+
+        var customKey = $"{ProductCacheKeyAsList}:{id}";
+
+        if (redisService.Database.KeyExists(customKey))
+        {
+            var productAsJsonFromCache = redisService.Database.ListGetByIndex(customKey, 0);
+
+            var productFromCache = JsonSerializer.Deserialize<ProductDto>(productAsJsonFromCache);
+
+            return ResponseModelDto<ProductDto?>.Success(productFromCache);
+        }
+
         var hasProduct = await productRepository.GetById(id);
 
         //Action Filter yazıldı
@@ -89,6 +131,10 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
         //     hasProduct.CreatedDate.ToShortDateString()
         // );
 
+        redisService.Database.ListLeftPush($"{ProductCacheKeyAsList}:{hasProduct.Id}",
+                JsonSerializer.Serialize(hasProduct));
+
+
         var productAsDto = mapper.Map<ProductDto>(hasProduct);
 
         return ResponseModelDto<ProductDto?>.Success(productAsDto);
@@ -96,6 +142,8 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
 
     public async Task<ResponseModelDto<NoContent>> Update(int productId, ProductUpdateRequestDto request)
     {
+        redisService.Database.KeyDelete(ProductCacheKey);
+
         var hasProduct = await productRepository.GetById(productId);
 
         // Action filter eklendi
@@ -119,6 +167,8 @@ public class ProductService2(IProductRepository2 productRepository, IUnitOfWork 
 
     public async Task<ResponseModelDto<NoContent>> UpdateProductName(int id, string name)
     {
+        redisService.Database.KeyDelete(ProductCacheKey);
+
         await productRepository.UpdateProductName(name, id);
 
         await unitOfWork.CommitAsync();
