@@ -1,3 +1,4 @@
+using API.Filters;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 using Service.Products;
@@ -8,6 +9,7 @@ using Service.Products.ProductCreateUseCase;
 
 namespace API.Products
 {
+    [ServiceFilter(typeof(LogFilterAttribute))]
     public class ProductsController(IProductService2 productService) : CustomBaseController
     {
         private readonly IProductService2 _productService = productService;

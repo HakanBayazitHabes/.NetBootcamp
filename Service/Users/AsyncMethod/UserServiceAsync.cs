@@ -56,10 +56,10 @@ namespace Service.Users.AsyncMethod
         {
             var hasUser = await userRepositoryAsync.GetById(id);
 
-            if (hasUser is null)
-            {
-                return ResponseModelDto<UserDto?>.Fail("User not found", System.Net.HttpStatusCode.NotFound);
-            }
+            // if (hasUser is null)
+            // {
+            //     return ResponseModelDto<UserDto?>.Fail("User not found", System.Net.HttpStatusCode.NotFound);
+            // }
 
             var userAsDto = mapper.Map<UserDto>(hasUser);
 
@@ -70,10 +70,10 @@ namespace Service.Users.AsyncMethod
         {
             var hasUser = await userRepositoryAsync.GetById(userId);
 
-            if (hasUser is null)
-            {
-                return ResponseModelDto<NoContent>.Fail("User not found", System.Net.HttpStatusCode.NotFound);
-            }
+            // if (hasUser is null)
+            // {
+            //     return ResponseModelDto<NoContent>.Fail("User not found", System.Net.HttpStatusCode.NotFound);
+            // }
 
             hasUser.Name = request.Name;
             hasUser.Email = request.Email;

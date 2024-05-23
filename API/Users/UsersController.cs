@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 using Service.Users.AsyncMethod;
 using Service.Users.DTOs;
+using Service.Users.Filters;
 using Service.Users.Helpers;
 using Service.Users.UserCreateUseCase;
 
@@ -16,7 +17,8 @@ public class UsersController(IUserServiceAsync userServiceAsync) : CustomBaseCon
         return Ok(await userServiceAsync.GetAllWithCalculatedAge(ageCalculator));
     }
 
-    [HttpGet("{userId}")]
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpGet("{userId:int}")]
     public async Task<IActionResult> GetById(int userId, [FromServices] AgeCalculator ageCalculator)
     {
         return CreateActionResult(await userServiceAsync.GetByIdWithCalculatedAge(userId, ageCalculator));
@@ -30,16 +32,25 @@ public class UsersController(IUserServiceAsync userServiceAsync) : CustomBaseCon
         return CreateActionResult(result, nameof(GetById), new { userId = result.Data });
     }
 
-    [HttpPut("{userId}")]
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpPut("{userId:int}")]
     public async Task<IActionResult> Update(int userId, UserUpdateRequestDto request)
     {
         return CreateActionResult(await userServiceAsync.Update(userId, request));
     }
 
-    [HttpDelete("{userId}")]
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpDelete("{userId:int}")]
     public async Task<IActionResult> Delete(int userId)
     {
         return CreateActionResult(await userServiceAsync.Delete(userId));
+    }
+
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpPut("UpdateUserName")]
+    public async Task<IActionResult> UpdateUserName(UserNameUpdateRequestDto request)
+    {
+        return CreateActionResult(await userServiceAsync.UpdateUserName(request.Id, request.Name));
     }
 
 }

@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Repository.Products.AsyncMethods;
+using Service.Logs.SyncMethod;
 using Service.Products.DTOs;
 using Service.SharedDTOs;
 
 namespace Service.Products
 {
-    public class NotFoundFilter(IProductRepository2 productRepository2) : Attribute, IActionFilter
+    public class NotFoundFilter(IProductRepository2 productRepository2, ILoggerService logger) : Attribute, IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
@@ -29,6 +30,7 @@ namespace Service.Products
 
             if (!hasProduct)
             {
+                logger.LogInfo($"There is no product with id: {productId}");
                 var errorMessage = $"There is no product with id: {productId}";
 
                 var responseModel = ResponseModelDto<NoContent>.Fail(errorMessage);

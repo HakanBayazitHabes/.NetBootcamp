@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 using Service.Roles.AsyncMethod;
 using Service.Roles.DTOs;
+using Service.Roles.Filters;
 using Service.Roles.RoleCreateUseCase;
 
 namespace API.Roles;
@@ -17,7 +18,8 @@ public class RolesController(IRoleServiceAsync roleService) : CustomBaseControll
         return CreateActionResult(await _roleService.GetAllRolesAsync());
     }
 
-    [HttpGet("{roleId}")]
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpGet("{roleId:int}")]
     public async Task<IActionResult> GetRoleById(int roleId)
     {
         return CreateActionResult(await _roleService.GetRoleByIdAsync(roleId));
@@ -30,15 +32,24 @@ public class RolesController(IRoleServiceAsync roleService) : CustomBaseControll
         return CreateActionResult(result, nameof(GetRoleById), new { roleId = result.Data });
     }
 
-    [HttpPut("{roleId}")]
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpPut("{roleId:int}")]
     public async Task<IActionResult> UpdateRole(int roleId, RoleUpdateRequestDto request)
     {
         return CreateActionResult(await _roleService.UpdateRoleAsync(roleId, request));
     }
 
-    [HttpDelete("{roleId}")]
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpDelete("{roleId:int}")]
     public async Task<IActionResult> DeleteRole(int roleId)
     {
         return CreateActionResult(await _roleService.DeleteRoleAsync(roleId));
+    }
+
+    [ServiceFilter(typeof(NotFoundFilter))]
+    [HttpPut("UpdateRoleName")]
+    public async Task<IActionResult> UpdateRoleName(RoleNameUpdateRequestDto request)
+    {
+        return CreateActionResult(await _roleService.UpdateRoleName(request.Id, request.Name));
     }
 }

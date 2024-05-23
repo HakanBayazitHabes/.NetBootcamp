@@ -47,10 +47,10 @@ public class RoleServiceAsync(IRoleRepositoryAsync roleRepositoryAsync, IUnitOfW
     {
         var hasRole = await roleRepositoryAsync.GetById(id);
 
-        if (hasRole is null)
-        {
-            return ResponseModelDto<RoleDto?>.Fail("Role not found", HttpStatusCode.NotFound);
-        }
+        // if (hasRole is null)
+        // {
+        //     return ResponseModelDto<RoleDto?>.Fail("Role not found", HttpStatusCode.NotFound);
+        // }
 
         var roleAsDto = mapper.Map<RoleDto>(hasRole);
 
@@ -61,10 +61,10 @@ public class RoleServiceAsync(IRoleRepositoryAsync roleRepositoryAsync, IUnitOfW
     {
         var hasRole = await roleRepositoryAsync.GetById(roleId);
 
-        if (hasRole is null)
-        {
-            return ResponseModelDto<NoContent>.Fail("Role not found", HttpStatusCode.NotFound);
-        }
+        // if (hasRole is null)
+        // {
+        //     return ResponseModelDto<NoContent>.Fail("Role not found", HttpStatusCode.NotFound);
+        // }
 
         hasRole.Name = request.Name;
 

@@ -1,15 +1,17 @@
-using API.Roles;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository;
-using Repository.Roles;
 using Service;
 using Service.Products.ProductCreateUseCase;
 using Service.Products.Configurations;
 using Service.Users.Configurations;
 using Service.Roles.Configurations;
+using API.Filters;
+using Service.Logs.Configurations;
+using NLog;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,12 +21,14 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"), x => { x.MigrationsAssembly(typeof(RepositoryAssembly).Assembly.GetName().Name); });
 });
 
+LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+
 builder.Services.Configure<ApiBehaviorOptions>(x => { x.SuppressModelStateInvalidFilter = true; });
 
 
 // Add services to the container.
 builder.Services.AddAutoMapper(typeof(ServiceAssembly).Assembly);
-builder.Services.AddControllers();
+builder.Services.AddControllers(x => x.Filters.Add<ValidationFilter>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -49,12 +53,14 @@ builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidat
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-
+builder.Services.AddSingleton<LogFilterAttribute>();
 builder.Services.AddProductService();
 
 builder.Services.AddUserService();
 
 builder.Services.AddRoleService();
+
+builder.Services.AddLogService();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
