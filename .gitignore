@@ -484,3 +484,4 @@ $RECYCLE.BIN/
 *.swp
 API/appsettings.json
 Web/appsettings.json
+API/internal_logs/internallog.txt
